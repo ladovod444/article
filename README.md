@@ -7,6 +7,21 @@
 
 ## Установка
 
+Добавать в composer.json
+``` bash
+"repositories": [
+{
+    "type": "package",
+    "package": {
+    "name": "baks-dev/article",
+    "version": "1.0",
+    "source": {
+    "url": "https://github.com/ladovod444/article.git",
+    "type": "git",
+    "reference": "master"
+    }
+}]
+
 ``` bash
 $ composer require baks-dev/article
 ```
