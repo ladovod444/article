@@ -68,13 +68,13 @@ final class AllArticleRepository implements AllArticleInterface
         $dbal->select('article.id');
         $dbal->addSelect('article.title');
 
-        $dbal
-            ->addSelect('
-            COALESCE(
-                article.type,
-                NULL
-            ) AS type
-        ');
+//        $dbal
+//            ->addSelect('
+//            COALESCE(
+//                article.type,
+//                NULL
+//            ) AS type
+//        ');
 
         $dbal->addSelect('article.content');
 

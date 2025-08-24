@@ -50,7 +50,7 @@ final class EditController extends AbstractController
         $ArticleDTO = new ArticleDTO()
             ->setId($Article->getId())
             ->setTitle($Article->getTitle())
-            ->setType($Article->getType())
+//            ->setType($Article->getType())
             ->setContent($Article->getContent());
 
         /** Форма */

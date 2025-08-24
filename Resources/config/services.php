@@ -45,5 +45,5 @@ return static function(ContainerConfigurator $container) {
             $PATH.'**'.DIRECTORY_SEPARATOR.'*Test.php',
         ]);
 
-
+    $services->load($NAMESPACE.'Type\RedisTags\\', $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'RedisTags']));
 };

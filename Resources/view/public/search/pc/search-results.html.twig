@@ -1,0 +1,11 @@
+{% if search_result %}
+    <h3>Нaйдено в articles:</h3>
+    {% set image_path = '/assets/img/blank.svg' %}
+    <div class="row row-cols-4 g-2 mb-5 rounded-4">
+        {% for article in search_result %}
+            <div class="col">
+                {{ include(_self|replace({ "search-results.html.twig" : "includes/search-card.html.twig" })) }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

@@ -28,7 +28,7 @@ use BaksDev\Article\Repository\AllArticle\AllArticleInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
- * @group article
+ * @group article1
  */
 class AllArticleRepositoryTest extends KernelTestCase
 {

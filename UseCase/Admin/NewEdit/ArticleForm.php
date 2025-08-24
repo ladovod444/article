@@ -46,14 +46,14 @@ final class ArticleForm extends AbstractType
             ->add('title', TextType::class, ['required' => true])
             ->add('content', TextareaType::class, ['required' => true]);
 
-        $builder->add('type', ChoiceType::class, [
-                'choices' => $this->profileTypeRepository->findUserTypeProfiles(false), // все типы профили
-                'choice_value' => 'value',
-                'choice_label' => 'option',
-                'expanded' => false,
-                'multiple' => false,
-                'required' => false,
-            ]);
+//        $builder->add('type', ChoiceType::class, [
+//                'choices' => $this->profileTypeRepository->findUserTypeProfiles(false), // все типы профили
+//                'choice_value' => 'value',
+//                'choice_label' => 'option',
+//                'expanded' => false,
+//                'multiple' => false,
+//                'required' => false,
+//            ]);
 
         /* Сохранить ******************************************************/
         $builder->add(

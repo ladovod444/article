@@ -59,7 +59,7 @@ final readonly class ArticleHandler
 
         $Article->setTitle($command->getTitle())
             ->setContent($command->getContent())
-            ->setType($command->getType())
+//            ->setType($command->getType())
         ;
         $this->entityManager->persist($Article);
         $this->entityManager->flush();

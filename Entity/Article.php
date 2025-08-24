@@ -25,6 +25,8 @@ declare(strict_types=1);
 
 namespace BaksDev\Article\Entity;
 
+use BaksDev\Article\Entity\Event\ArticleEvent;
+use BaksDev\Article\Type\Event\ArticleEventUid;
 use BaksDev\Article\Type\Id\ArticleUid;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\TypeProfileUid;
 use Doctrine\DBAL\Types\Types;
@@ -46,13 +48,12 @@ class Article
     #[ORM\Column(type: ArticleUid::TYPE)]
     private ArticleUid $id;
 
-    #[Assert\NotBlank(message: 'Заголовок обязателен для заполнения')]
-    #[ORM\Column(type: Types::STRING)]
-    private ?string $title = null;
+    /** Идентификатор события */
+    #[Assert\NotBlank]
+    #[Assert\Uuid]
+    #[ORM\Column(type: ArticleEventUid::TYPE, unique: true)]
+    private ArticleEventUid $event;
 
-    #[Assert\NotBlank(message: 'Содержимое обязательно для заполнения')]
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $content = null;
 
     /**
      * Тип профиля пользователей
@@ -72,29 +73,7 @@ class Article
         return (string) $this->id;
     }
 
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
 
-    public function setTitle(?string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(?string $content): self
-    {
-        $this->content = $content;
-
-        return $this;
-    }
 
 //    public function getType(): ?TypeProfileUid
 //    {
@@ -113,5 +92,22 @@ class Article
     {
         return $this->id;
     }
+
+    public function getEvent(): ArticleEventUid
+    {
+        return $this->event;
+    }
+
+    public function setEvent(ArticleEventUid|ArticleEvent $event): self
+    {
+//        $this->event = $event;
+
+
+        $this->event = $event instanceof ArticleEvent ? $event->getId() : $event;
+
+        return $this;
+    }
+
+
 
 }

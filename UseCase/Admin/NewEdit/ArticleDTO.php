@@ -44,12 +44,12 @@ final class ArticleDTO
     #[Assert\NotBlank(message: 'Содержимое обязательно для заполнения')]
     private ?string $content = null;
 
-    /**
-     * Тип профиля пользователей
-     * @var TypeProfileUid
-     */
-    #[Assert\Uuid]
-    private ?TypeProfileUid $type = null;
+//    /**
+//     * Тип профиля пользователей
+//     * @var TypeProfileUid
+//     */
+//    #[Assert\Uuid]
+//    private ?TypeProfileUid $type = null;
 
     public function getTitle(): ?string
     {
@@ -75,17 +75,17 @@ final class ArticleDTO
         return $this;
     }
 
-    public function getType(): ?TypeProfileUid
-    {
-        return $this->type;
-    }
-
-    public function setType(?TypeProfileUid $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
+//    public function getType(): ?TypeProfileUid
+//    {
+//        return $this->type;
+//    }
+//
+//    public function setType(?TypeProfileUid $type): self
+//    {
+//        $this->type = $type;
+//
+//        return $this;
+//    }
 
     public function getId(): ?ArticleUid
     {

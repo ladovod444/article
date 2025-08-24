@@ -7,20 +7,20 @@
     </td>
 
     {# Тип профиля #}
-    <td class="ms-0 text-center">
-        <div class="w-25">
-            <span class="d-inline-block text-truncate text-emphasis align-middle"
-                  style="max-width: 150px;">
-                {% if item.name %}
-                    {{ item.name }}
-                {% else %}
-                    {{ 'filter.unchosen_profile'|trans }}
-                {% endif %}
-            </span>
-        </div>
-    </td>
+{#    <td class="ms-0 text-center">#}
+{#        <div class="w-25">#}
+{#            <span class="d-inline-block text-truncate text-emphasis align-middle"#}
+{#                  style="max-width: 150px;">#}
+{#                {% if item.name %}#}
+{#                    {{ item.name }}#}
+{#                {% else %}#}
+{#                    {{ 'filter.unchosen_profile'|trans }}#}
+{#                {% endif %}#}
+{#            </span>#}
+{#        </div>#}
+{#    </td>#}
 
-    {# Заголовок ответа #}
+    {# Заголовок статьи #}
     <td style="min-width: 350px;">
         <a
                 class="btn btn-sm btn-link text-decoration-none disabled"
@@ -35,7 +35,7 @@
         </a>
     </td>
 
-    {# Содержимое ответа #}
+    {# Содержимое статьи #}
     <td class="w-100">
         <span class="d-inline-block text-truncate align-middle"
               style="max-width: 600px;">
