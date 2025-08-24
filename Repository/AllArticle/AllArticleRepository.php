@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace BaksDev\Article\Repository\AllArticle;
 
+use BaksDev\Article\Entity\Event\ArticleEvent;
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Core\Form\Search\SearchDTO;
 use BaksDev\Core\Services\Paginator\PaginatorInterface;
@@ -65,8 +66,21 @@ final class AllArticleRepository implements AllArticleInterface
             ->createQueryBuilder(self::class)
             ->bindLocal();
 
-        $dbal->select('article.id');
-        $dbal->addSelect('article.title');
+//        $dbal->select('article.id');
+//        $dbal->addSelect('article.title');
+        $dbal->from(Article::class, 'article');
+
+        $dbal->leftJoin(
+            'article',
+            ArticleEvent::class,
+            'event',
+            'article.event = event.id'
+        )
+            ->addSelect('event.id')
+            ->addSelect('event.title')
+            ->addSelect('event.content')
+
+        ;
 
 //        $dbal
 //            ->addSelect('
@@ -76,9 +90,9 @@ final class AllArticleRepository implements AllArticleInterface
 //            ) AS type
 //        ');
 
-        $dbal->addSelect('article.content');
+//        $dbal->addSelect('event.content');
 
-        $dbal->from(Article::class, 'article');
+
 
 //        $dbal->leftJoin(
 //            'article',
@@ -133,12 +147,12 @@ final class AllArticleRepository implements AllArticleInterface
         {
             $dbal
                 ->createSearchQueryBuilder($this->search)
-                ->addSearchLike('article.content')
-                ->addSearchLike('article.title');
+                ->addSearchLike('event.content')
+                ->addSearchLike('event.title');
         }
 
         $dbal
-            ->orderBy('article.title');
+            ->orderBy('event.title');
         return $this->paginator->fetchAllAssociative($dbal);
     }
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace BaksDev\Article\Entity\Event;
 
 use BaksDev\Article\Entity\Article;
-use BaksDev\Article\Type\Event\ArticleEventInterface;
 use BaksDev\Article\Type\Event\ArticleEventUid;
 use BaksDev\Article\Type\Id\ArticleUid;
 use BaksDev\Core\Type\Locale\Locale;

@@ -25,18 +25,25 @@ declare(strict_types=1);
 
 namespace BaksDev\Article\UseCase\Admin\NewEdit;
 
+use BaksDev\Article\Entity\Event\ArticleEventInterface;
+use BaksDev\Article\Type\Event\ArticleEventUid;
 use BaksDev\Article\Type\Id\ArticleUid;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\TypeProfileUid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class ArticleDTO
+final class ArticleDTO implements ArticleEventInterface
 {
     
     /**
      * Идентификатор
      */
     #[Assert\Uuid]
-    private ?ArticleUid $id = null;
+//    private ?ArticleUid $id = null;
+
+
+    /**  Идентификатор События */
+    #[Assert\Uuid]
+    private ?ArticleEventUid $id = null;
 
     #[Assert\NotBlank(message: 'Заголовок обязателен для заполнения')]
     private ?string $title = null;
@@ -87,15 +94,28 @@ final class ArticleDTO
 //        return $this;
 //    }
 
-    public function getId(): ?ArticleUid
+//    public function getId(): ?ArticleUid
+//    {
+//        return $this->id;
+//    }
+//
+//    public function setId(?ArticleUid $id): self
+//    {
+//        $this->id = $id;
+//
+//        return $this;
+//    }
+
+
+    public function getEvent(): ?ArticleEventUid
     {
         return $this->id;
     }
 
-    public function setId(?ArticleUid $id): self
+
+    public function setId(ArticleEventUid $id): self
     {
         $this->id = $id;
-
         return $this;
     }
     

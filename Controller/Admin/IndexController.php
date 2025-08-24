@@ -89,7 +89,7 @@ final class IndexController extends AbstractController
                 'search' => $searchForm->createView(),
                 'filter' => $filterForm->createView(),
             ],
-            file: 'article.html.twig'
+//            file: 'article.html.twig'
         );
     }
 }

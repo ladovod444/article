@@ -23,6 +23,7 @@
 
 namespace BaksDev\Article\Controller\Admin;
 
+use BaksDev\Article\Entity\Event\ArticleEvent;
 use BaksDev\Core\Controller\AbstractController;
 use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
 use BaksDev\Article\Entity\Article;
@@ -41,17 +42,25 @@ final class EditController extends AbstractController
 {
     #[Route('/admin/article/edit/{id}', name: 'admin.newedit.edit', methods: ['GET', 'POST'])]
     public function edit(
-        #[MapEntity] Article $Article,
+//        #[MapEntity] Article $Article,
+        #[MapEntity] ArticleEvent $articleEvent,
         Request $request,
         ArticleHandler $ArticleHandler,
     ): Response
     {
 
+//        dd(1);
+
         $ArticleDTO = new ArticleDTO()
-            ->setId($Article->getId())
-            ->setTitle($Article->getTitle())
-//            ->setType($Article->getType())
-            ->setContent($Article->getContent());
+//            ->setId($Article->getId())
+//            ->setTitle($Article->getTitle())
+////            ->setType($Article->getType())
+//            ->setContent($Article->getContent())
+
+    ;
+
+
+        $articleEvent->getDto($ArticleDTO);
 
         /** Форма */
         $form = $this
@@ -60,7 +69,7 @@ final class EditController extends AbstractController
                 data: $ArticleDTO,
                 options: ['action' => $this->generateUrl(
                     route: 'article:admin.newedit.edit',
-                    parameters: ['id' => $Article->getId()]
+                    parameters: ['id' => $ArticleDTO->getEvent()]
                 ),]
             )
             ->handleRequest($request);

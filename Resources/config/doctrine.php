@@ -24,6 +24,8 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use BaksDev\Article\BaksDevArticleBundle;
+use BaksDev\Article\Type\Event\ArticleEventType;
+use BaksDev\Article\Type\Event\ArticleEventUid;
 use BaksDev\Article\Type\Id\ArticleType;
 use BaksDev\Article\Type\Id\ArticleUid;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\TypeProfileType;
@@ -32,7 +34,10 @@ use Symfony\Config\DoctrineConfig;
 
 return static function(ContainerConfigurator $container, DoctrineConfig $doctrine) {
 
+//    dd(BaksDevArticleBundle::PATH);
+
     $doctrine->dbal()->type(ArticleUid::TYPE)->class(ArticleType::class);
+    $doctrine->dbal()->type(ArticleEventUid::TYPE)->class(ArticleEventType::class);
     $doctrine->dbal()->type(TypeProfileUid::TYPE)->class(TypeProfileType::class);
 
     $emDefault = $doctrine->orm()->entityManager('default')->autoMapping(true);

@@ -57,9 +57,13 @@ final class NewController extends AbstractController
             )
             ->handleRequest($request);
 
+
+
         if($form->isSubmitted() && $form->isValid())
         {
             $this->refreshTokenForm($form);
+
+//            dd($ArticleDTO);
 
             $handle = $answerHandler->handle($ArticleDTO);
 

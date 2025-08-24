@@ -25,53 +25,80 @@ declare(strict_types=1);
 
 namespace BaksDev\Article\UseCase\Admin\NewEdit;
 
+use BaksDev\Article\Entity\Event\ArticleEvent;
+use BaksDev\Core\Entity\AbstractHandler;
 use BaksDev\Core\Messenger\MessageDispatchInterface;
 use BaksDev\Article\Entity\Article;
 use BaksDev\Article\Messenger\ArticleMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final readonly class ArticleHandler
+final  class ArticleHandler extends AbstractHandler
 {
-    public function __construct(
-        private EntityManagerInterface $entityManager,
-        private MessageDispatchInterface $messageDispatch,
-        private ValidatorInterface $validator
-    ) {}
+//    public function __construct(
+//        private EntityManagerInterface $entityManager,
+//        private MessageDispatchInterface $messageDispatch,
+//        private ValidatorInterface $validator
+//    ) {}
 
-    public function handle(ArticleDTO $command): bool|string|Article
-    {
-        $errors = $this->validator->validate($command);
 
-        if($errors->count())
+    public function handle(ArticleDTO $command) {
+        $this->setCommand($command);
+        $this->preEventPersistOrUpdate(Article::class, ArticleEvent::class);
+
+
+        /** Валидация всех объектов */
+        if($this->validatorCollection->isInvalid())
         {
-            return false;
+            return $this->validatorCollection->getErrorUniqid();
         }
 
-        $Article = $command->getId() ?
-            $this->entityManager->getRepository(Article::class)->find($command->getId()) :
-            new Article();
-        
-        if(false === ($Article instanceof Article))
-        {
-            return false;
-        }
+        $this->flush();
 
-        $Article->setTitle($command->getTitle())
-            ->setContent($command->getContent())
-//            ->setType($command->getType())
-        ;
-        $this->entityManager->persist($Article);
-        $this->entityManager->flush();
 
-        /* Отправляем сообщение в шину */
-        $message = new ArticleMessage($command->getId());
-
+        /** Отправляем сообщение в шину */
         $this->messageDispatch->dispatch(
-            message: $message,
-            transport: 'article'
+//            message: new ArticleMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent(), $command->getStatus()),
+            message: new ArticleMessage($this->main->getId()),
+            transport: 'support'
         );
 
-        return $Article;
+        return $this->main;
     }
+
+//    public function handle1(ArticleDTO $command): bool|string|Article
+//    {
+//        $errors = $this->validator->validate($command);
+//
+//        if($errors->count())
+//        {
+//            return false;
+//        }
+//
+//        $Article = $command->getId() ?
+//            $this->entityManager->getRepository(Article::class)->find($command->getId()) :
+//            new Article();
+//
+//        if(false === ($Article instanceof Article))
+//        {
+//            return false;
+//        }
+//
+//        $Article->setTitle($command->getTitle())
+//            ->setContent($command->getContent())
+////            ->setType($command->getType())
+//        ;
+//        $this->entityManager->persist($Article);
+//        $this->entityManager->flush();
+//
+//        /* Отправляем сообщение в шину */
+//        $message = new ArticleMessage($command->getId());
+//
+//        $this->messageDispatch->dispatch(
+//            message: $message,
+//            transport: 'article'
+//        );
+//
+//        return $Article;
+//    }
 }
