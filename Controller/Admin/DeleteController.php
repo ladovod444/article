@@ -25,6 +25,8 @@ declare(strict_types=1);
 
 namespace BaksDev\Article\Controller\Admin;
 
+use BaksDev\Article\Entity\Event\ArticleEvent;
+use BaksDev\Article\UseCase\Admin\NewEdit\ArticleDTO;
 use BaksDev\Core\Controller\AbstractController;
 use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
 use BaksDev\Article\Entity\Article;
@@ -44,19 +46,27 @@ final class DeleteController extends AbstractController
     #[Route('/admin/article/delete/{id}', name: 'admin.delete', methods: ['GET', 'POST'])]
     public function delete(
         Request $request,
-        #[MapEntity] Article $Article,
+        #[MapEntity] ArticleEvent $articleEvent,
         ArticleDeleteHandler $ArticleDeleteHandler,
     ): Response
     {
 
-        $ArticleDeleteDTO = new ArticleDeleteDTO();
-        $ArticleDeleteDTO->setId($Article->getId());
+        $ArticleDeleteDTO = new ArticleDeleteDTO()
+            //            ->setId($Article->getId())
+            //            ->setTitle($Article->getTitle())
+            ////            ->setType($Article->getType())
+            //            ->setContent($Article->getContent())
+
+        ;
+
+
+        $articleEvent->getDto($ArticleDeleteDTO);
 
         $form = $this
             ->createForm(ArticleDeleteForm::class, $ArticleDeleteDTO, [
                 'action' => $this->generateUrl(
                     'article:admin.delete',
-                    ['id' => $Article->getId()]
+                    ['id' => $articleEvent]
                 ),
             ])
             ->handleRequest($request);

@@ -25,12 +25,15 @@ declare(strict_types=1);
 
 namespace BaksDev\Article\Controller\Admin;
 
+use BaksDev\Article\UseCase\Admin\New\ArticleInvariableDTO;
 use BaksDev\Core\Controller\AbstractController;
 use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
 use BaksDev\Article\Entity\Article;
 use BaksDev\Article\UseCase\Admin\NewEdit\ArticleDTO;
 use BaksDev\Article\UseCase\Admin\NewEdit\ArticleForm;
 use BaksDev\Article\UseCase\Admin\NewEdit\ArticleHandler;
+use BaksDev\Users\Profile\UserProfile\Repository\CurrentUserProfile\CurrentUserProfileInterface;
+use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -44,8 +47,13 @@ final class NewController extends AbstractController
     public function news(
         Request $request,
         ArticleHandler $answerHandler,
+        CurrentUserProfileInterface $currentUserProfileDTO,
     ): Response
     {
+
+
+        $user = $currentUserProfileDTO->fetchProfileAssociative($this->getCurrentUsr());
+
         $ArticleDTO = new ArticleDTO();
 
         /** Форма */
@@ -63,7 +71,35 @@ final class NewController extends AbstractController
         {
             $this->refreshTokenForm($form);
 
+
+
+            /**
+             * Присваиваем профиль пользователя бизнес-профиля, если не указано в тикете
+             */
+
+//            $ArticleInvariableDTO = $ArticleDTO->getInvariable();
+//
+//            if(
+//                true === ($ArticleInvariableDTO instanceof ArticleInvariableDTO)
+////                && false === ($ArticleInvariableDTO->getProfile() instanceof UserProfileUid)
+//            )
+//            {
+//
+//                $ArticleInvariableDTO = $ArticleDTO->getInvariable();
+//                $ArticleInvariableDTO->setProfile($this->getProfileUid());
+//
+//                $ArticleDTO->setInvariable($ArticleInvariableDTO);
+//            }
+
+            $ArticleInvariableDTO = new ArticleInvariableDTO();
+            $ArticleInvariableDTO->setProfile($this->getProfileUid());
+
+            $ArticleDTO->setInvariable($ArticleInvariableDTO); 
+
+
 //            dd($ArticleDTO);
+
+
 
             $handle = $answerHandler->handle($ArticleDTO);
 

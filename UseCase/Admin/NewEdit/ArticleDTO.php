@@ -28,6 +28,8 @@ namespace BaksDev\Article\UseCase\Admin\NewEdit;
 use BaksDev\Article\Entity\Event\ArticleEventInterface;
 use BaksDev\Article\Type\Event\ArticleEventUid;
 use BaksDev\Article\Type\Id\ArticleUid;
+use BaksDev\Article\UseCase\Admin\New\ArticleInvariableDTO;
+use BaksDev\Support\UseCase\Admin\New\Invariable\SupportInvariableDTO;
 use BaksDev\Users\Profile\TypeProfile\Type\Id\TypeProfileUid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -50,6 +52,10 @@ final class ArticleDTO implements ArticleEventInterface
 
     #[Assert\NotBlank(message: 'Содержимое обязательно для заполнения')]
     private ?string $content = null;
+
+
+    /** Постоянная величина */
+    private ?ArticleInvariableDTO $invariable = null;
 
 //    /**
 //     * Тип профиля пользователей
@@ -116,6 +122,18 @@ final class ArticleDTO implements ArticleEventInterface
     public function setId(ArticleEventUid $id): self
     {
         $this->id = $id;
+        return $this;
+    }
+
+    public function getInvariable(): ?ArticleInvariableDTO
+    {
+        return $this->invariable;
+    }
+
+
+    public function setInvariable(?ArticleInvariableDTO $invariable): self
+    {
+        $this->invariable = $invariable;
         return $this;
     }
     

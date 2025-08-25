@@ -23,10 +23,13 @@
 
 namespace BaksDev\Article\UseCase\Admin\Delete;
 
+use BaksDev\Article\Entity\Event\ArticleEvent;
+use BaksDev\Article\Entity\Event\ArticleEventInterface;
+use BaksDev\Article\Type\Event\ArticleEventUid;
 use BaksDev\Article\Type\Id\ArticleUid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class ArticleDeleteDTO
+final class ArticleDeleteDTO implements ArticleEventInterface
 {
     
     /**
@@ -34,6 +37,18 @@ final class ArticleDeleteDTO
      */
     #[Assert\Uuid]
     private ?ArticleUid $id = null;
+    private ?ArticleEventUid $event = null;
+
+    public function getEvent(): ?ArticleEventUid
+    {
+        return $this->event;
+    }
+
+    public function setEvent(?ArticleEventUid $event): self
+    {
+        $this->event = $event;
+        return $this;
+    }
 
     public function getId(): ?ArticleUid
     {

@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace BaksDev\Article\Repository\AllArticle;
 
 use BaksDev\Article\Entity\Event\ArticleEvent;
+use BaksDev\Article\Entity\Modify\ArticleModify;
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Core\Form\Search\SearchDTO;
 use BaksDev\Core\Services\Paginator\PaginatorInterface;
@@ -81,6 +82,14 @@ final class AllArticleRepository implements AllArticleInterface
             ->addSelect('event.content')
 
         ;
+
+        $dbal->leftJoin(
+            'event',
+            ArticleModify::class,
+            'modify',
+            'modify.event = event.id'
+        )
+            ->addSelect('modify.mod_date as date');
 
 //        $dbal
 //            ->addSelect('

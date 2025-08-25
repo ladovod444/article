@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace BaksDev\Article\Entity\Event;
 
 use BaksDev\Article\Entity\Article;
+use BaksDev\Article\Entity\Invariable\ArticleInvariable;
+use BaksDev\Article\Entity\Modify\ArticleModify;
 use BaksDev\Article\Type\Event\ArticleEventUid;
 use BaksDev\Article\Type\Id\ArticleUid;
 use BaksDev\Core\Type\Locale\Locale;
 use BaksDev\Core\Type\Modify\ModifyAction;
+use BaksDev\Support\Entity\Invariable\SupportInvariable;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
@@ -42,6 +45,10 @@ class ArticleEvent extends EntityEvent
     #[ORM\Column(type: ArticleUid::TYPE)]
     private ?ArticleUid $main;
 
+    /**  Постоянная величина */
+    #[ORM\OneToOne(targetEntity: ArticleInvariable::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
+    private ?ArticleInvariable $invariable = null;
+
     /** One To One */
     //#[ORM\OneToOne(mappedBy: 'event', targetEntity: ArticleLogo::class, cascade: ['all'])]
     //private ?ArticleOne $one = null;
@@ -49,8 +56,8 @@ class ArticleEvent extends EntityEvent
     /**
      * Модификатор
      */
-//    #[ORM\OneToOne(mappedBy: 'event', targetEntity: ArticleModify::class, cascade: ['all'])]
-//    private ArticleModify $modify;
+    #[ORM\OneToOne(mappedBy: 'event', targetEntity: ArticleModify::class, cascade: ['all'])]
+    private ArticleModify $modify;
 
     /**
      * Переводы
@@ -95,7 +102,7 @@ class ArticleEvent extends EntityEvent
     public function __construct()
     {
         $this->id = new ArticleEventUid();
-//        $this->modify = new ArticleModify($this);
+        $this->modify = new ArticleModify($this);
 
     }
 
@@ -150,5 +157,27 @@ class ArticleEvent extends EntityEvent
 
         throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
     }
+
+
+    public function isInvariable(): bool
+    {
+        return $this->invariable instanceof ArticleInvariable;
+    }
+
+    public function setInvariable(ArticleInvariable|false $invariable): self
+    {
+        if($invariable instanceof ArticleInvariable)
+        {
+            $this->invariable = $invariable;
+        }
+
+        return $this;
+    }
+
+    public function getInvariable(): ?ArticleInvariable
+    {
+        return $this->invariable;
+    }
+
 
 }
